@@ -27,9 +27,9 @@ class SectorComponent extends Component {
                 <Form.Control name="sector" as="select">
                     {
                     this.state.sectors
-                        .sort( (a, b) => a > b ? 1 : -1 )
+                        .sort( (a, b) => a.name > b.name ? 1 : -1 )
                         .map( sector => (
-                        <option key={sector} value={sector}> {sector} </option>
+                        <option key={sector.id} value={sector.id}> {sector.name} </option>
                         ))
                     }
                 </Form.Control>

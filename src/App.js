@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Form, Button } from 'react-bootstrap/';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SectorComponent from './components/SectorComponent';
 
 const sectors = [
   'Escolha um setor',
@@ -75,20 +76,7 @@ class App extends Component {
                 onChange={ this.onChange }></Form.Control>
             </Form.Group>
 
-            <Form.Group className="Field">
-              <Form.Label>Setor</Form.Label>
-              <Form.Control name="sector" as="select"
-                value={ this.state.sector }
-                onChange={ this.onChange }>
-                {
-                  sectors
-                    .sort( (a, b) => a > b ? 1 : -1 )
-                    .map( sector => (
-                      <option key={sector} value={sector}> {sector} </option>
-                    ))
-                }
-              </Form.Control>
-            </Form.Group>
+            <SectorComponent/>
 
             <Button onClick={ () => this.postIdea() } className="Send-Button" variant="primary" size="lg">Enviar</Button>
           </div>

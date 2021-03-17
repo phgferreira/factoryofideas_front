@@ -3,6 +3,7 @@ import './App.css';
 import { Form, Button } from 'react-bootstrap/';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SectorComponent from './components/SectorComponent';
+import SectorService from './services/SectorService';
 
 const sectors = [
   'Escolha um setor',
@@ -19,9 +20,12 @@ class App extends Component {
     super(props);
 
     this.state = {
-      name: '',
-      suggestion: '',
-      sector: ''
+      name: 'Nique',
+      suggestion: 'Sugestão de teste',
+      sector: {
+        id: '',
+        name: ''
+      }
     }
 
     this.onChange = this.onChange.bind(this);
@@ -35,23 +39,8 @@ class App extends Component {
 
   async postIdea() {
     try {
-      let result = await fetch('https://webhook.site/68e70d52-1c5b-4448-9e26-06d1f08a8a4a', {
-        method: 'post',
-        mode: 'no-cors',
-        headers: {
-            
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: this.state.name,
-          suggestion: this.state.suggestion,
-          sector: this.state.sector
-        })
-      })
-
-      console.log('Sucess: ' + result);
-
+      SectorService.sendMail(this.state);
+      console.log('Success')
     } catch(e) {
       console.error('Failed: ' + e);
     }

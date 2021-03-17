@@ -1,46 +1,55 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import './App.css';
 import { Form, Button } from 'react-bootstrap/';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SectorComponent from './components/SectorComponent';
 import SectorService from './services/SectorService';
-
-const sectors = [
-  'Escolha um setor',
-  'Tecnologia da Informação',
-  'Controle de Infecção',
-  'Nutição',
-  'Faturamento',
-  'Gestão da Qualidade'
-]
+import IdeaService from './services/IdeaService';
 
 class App extends Component {
+
+  initialState = {
+    name: '',
+    suggestion: '',
+    sector: {
+      id: ''
+    },
+    sectors: [],
+    result: false
+  }
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      name: 'Nique',
-      suggestion: 'Sugestão de teste',
-      sector: {
-        id: '',
-        name: ''
-      }
-    }
+    this.state = this.initialState;
 
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(event) {
+  reset() {
+    this.setState(this.initialState);
+    this.componentDidMount();
+    this.setState({ result: true })
+  }
+
+  onChange(e) {
     this.setState({
-      [event.target.name]: event.target.value
+      [e.target.name]: e.target.value
     });
+  }
+
+  componentDidMount() {
+    SectorService.getSectors().then((response) => {
+        this.setState({
+            sectors: response.data
+        })
+    })
   }
 
   async postIdea() {
     try {
-      SectorService.sendMail(this.state);
-      console.log('Success')
+      IdeaService.sendMail(this.state).then((response) => {
+        this.reset();
+      });
     } catch(e) {
       console.error('Failed: ' + e);
     }
@@ -65,9 +74,22 @@ class App extends Component {
                 onChange={ this.onChange }></Form.Control>
             </Form.Group>
 
-            <SectorComponent/>
+            <Form.Group className="Field">
+              <Form.Label>Setor</Form.Label>
+                <Form.Control name="sector" as="select"
+                    onChange={ (e) => { this.setState({ sector: { id: e.target.value } }) } }>
+                    {
+                    this.state.sectors
+                        .sort( (a, b) => a.name > b.name ? 1 : -1 )
+                        .map( sector => (
+                        <option key={sector.id} value={sector.id}> {sector.name} </option>
+                        ))
+                    }
+                </Form.Control>
+            </Form.Group>
 
             <Button onClick={ () => this.postIdea() } className="Send-Button" variant="primary" size="lg">Enviar</Button>
+
           </div>
         </header>
       </div>

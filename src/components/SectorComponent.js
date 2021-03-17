@@ -5,10 +5,13 @@ import SectorService from '../services/SectorService';
 
 class SectorComponent extends Component {
 
+    // Infelizmente não consegui transferir o estado do SectorComponent para o App
+    // Por isso migruei todo o código para o App e vou tentar melhorar depois
+
     constructor(props) {
         super(props)
         this.state = {
-            sectors: []
+            sectors: [],
         }
     }
 
@@ -20,11 +23,16 @@ class SectorComponent extends Component {
         })
     }
 
-    render() {
+    onChange(e) {
+        this.props.onChange(e);
+    }
+
+    render(props) {
         return(
             <Form.Group className="Field">
               <Form.Label>Setor</Form.Label>
-                <Form.Control name="sector" as="select">
+                <Form.Control name="sector" as="select"
+                    onChange={ this.onChange }>
                     {
                     this.state.sectors
                         .sort( (a, b) => a.name > b.name ? 1 : -1 )

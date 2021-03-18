@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import './App.css';
-import { Form, Button } from 'react-bootstrap/';
+import { Form, Button, Alert } from 'react-bootstrap/';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SectorService from './services/SectorService';
 import IdeaService from './services/IdeaService';
@@ -14,7 +14,8 @@ class App extends Component {
       id: ''
     },
     sectors: [],
-    result: false
+    result: 'ainda não foi enviado',
+    variant: 'secondary'
   }
 
   constructor(props) {
@@ -47,8 +48,12 @@ class App extends Component {
 
   async postIdea() {
     try {
-      IdeaService.sendMail(this.state).then((response) => {
+      IdeaService.sendEmail(this.state).then((response) => {
         this.reset();
+        this.setState({
+          result: response.data,
+          variant: 'success'
+        })
       });
     } catch(e) {
       console.error('Failed: ' + e);
@@ -89,6 +94,8 @@ class App extends Component {
             </Form.Group>
 
             <Button onClick={ () => this.postIdea() } className="Send-Button" variant="primary" size="lg">Enviar</Button>
+
+            <Alert variant={ this.state.variant }>{ this.state.result }</Alert>
 
           </div>
         </header>

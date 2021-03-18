@@ -10,7 +10,7 @@ class IdeaService {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(idea)
-        }).then((response) => response.json())
+        }).then((response) => response.ok)
     }
 
 }

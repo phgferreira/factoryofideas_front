@@ -41,7 +41,7 @@ class App extends Component {
   }
 
   reset() {
-    this.setState(this.initialState);
+    this.setState(this.resetState);
     this.componentDidMount();
   }
 
@@ -55,7 +55,7 @@ class App extends Component {
         this.setState({ message: 'Enviando ...', variant: 'warning', suggestionRequired: false, sectorRequired: false, disabled: true });
         IdeaService.sendEmail(this.state.idea).then((response) => {
           this.reset();
-          this.setState({ message: 'Enviado com sucesso', variant: 'success' })
+          this.setState({ message: 'Enviado com sucesso', variant: 'success', disabled: false })
         });
       }
     } catch(e) {

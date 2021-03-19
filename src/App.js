@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import './App.css';
+import logo from './img/logo.jpg';
 import { Form, Button, Alert } from 'react-bootstrap/';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SectorService from './services/SectorService';
@@ -21,6 +22,7 @@ class App extends Component {
     sectorRequired: false,
 
   }
+
 
   constructor(props) {
     super(props);
@@ -68,6 +70,8 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <div className="Frame">
+
+            <img src={logo} className="Logo" alt=""/>
 
             <Form.Group className="Field First-Field">
               <Form.Label>Nome (opcional)</Form.Label>
